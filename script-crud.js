@@ -17,7 +17,7 @@ form_add_tarefa.addEventListener('submit', (evento) => {
     tarefas.push(tarefa)
     const elemento_tarefa = criarElementoTarefa(tarefa)
     ul_tarefas.append(elemento_tarefa)
-    localStorage.setItem('tarefas', JSON.stringify(tarefas))
+    atualizarTarefas(tarefas)
 
     txt_tarefa.value = ''
     form_add_tarefa.classList.add('hidden')
@@ -41,6 +41,16 @@ function criarElementoTarefa(tarefa) {
     const botao = document.createElement('button')
     botao.classList.add('app_button-edit')
 
+    botao.addEventListener('click', () => {
+        const nova_descricao = prompt('Qual o novo nome da tarefa?')
+        if (nova_descricao) {
+            paragrafo.textContent = nova_descricao
+            tarefa.descricao = nova_descricao
+            atualizarTarefas(tarefas)
+        }
+
+    })
+
     const imgBtn = document.createElement('img')
     imgBtn.setAttribute('src', 'imagens/edit.png')
     botao.append(imgBtn)
@@ -48,7 +58,7 @@ function criarElementoTarefa(tarefa) {
     li.append(svg)
     li.append(paragrafo)
     li.append(botao)
-    
+
     return li
 }
 
@@ -56,3 +66,7 @@ tarefas.forEach(tarefa => {
     const elemento_tarefa = criarElementoTarefa(tarefa)
     ul_tarefas.append(elemento_tarefa)
 });
+
+function atualizarTarefas(tarefas) {
+    localStorage.setItem('tarefas', JSON.stringify(tarefas))
+}
